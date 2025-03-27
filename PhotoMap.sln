@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoMapAPI", "PhotoMapAPI\PhotoMapAPI.csproj", "{349DB956-B786-4390-BCB3-CFB2493E602A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestAPI", "TestAPI\TestAPI.csproj", "{C7AEE033-F5B3-421C-8B42-C5A179C479CC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{349DB956-B786-4390-BCB3-CFB2493E602A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{349DB956-B786-4390-BCB3-CFB2493E602A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{349DB956-B786-4390-BCB3-CFB2493E602A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7AEE033-F5B3-421C-8B42-C5A179C479CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7AEE033-F5B3-421C-8B42-C5A179C479CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7AEE033-F5B3-421C-8B42-C5A179C479CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7AEE033-F5B3-421C-8B42-C5A179C479CC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
