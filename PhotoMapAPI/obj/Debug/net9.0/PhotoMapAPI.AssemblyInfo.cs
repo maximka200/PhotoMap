@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PhotoMapAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7c24b034d5d7ca022b4ff4cdbb724fc194f800b7")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7c592bd7b95fd34f4cbf5c251996997e847ad465")]
 [assembly: System.Reflection.AssemblyProductAttribute("PhotoMapAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PhotoMapAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

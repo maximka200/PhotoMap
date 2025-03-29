@@ -1,32 +1,26 @@
-using Microsoft.AspNetCore.Mvc;
-using PhotoMapAPI.Models;
+﻿using Microsoft.AspNetCore.Mvc;
 
-namespace PhotoMapAPI.Controllers
+namespace PhotoMapAPI.Controllers;
+
+[ApiController]
+[Route("api/photos/[controller]")]
+public class PhotoController : ControllerBase
 {
-    [ApiController]
-    [Route("api/points")]
-    public class PointController : ControllerBase
+    private readonly IPhotoServices photoServices;
+
+    public PhotoController(IPhotoServices photoServices)
     {
-        private static readonly List<PointOnMap> Points = new()
+        this.photoServices = photoServices;
+    }
+    
+    [HttpGet("{id}")]
+    public IActionResult GetPhotoById(int id)
+    {
+        var photo = photoServices.GetPhotoById(id);
+        if (photo == null)
         {
-            new PointOnMap("Point A", "Description A", 1, 55.751244, 37.618423, new List<Photo> { new Photo(1) }),
-            new PointOnMap("Point B", "Description B", 2, 40.712776, -74.005974, new List<Photo> { new Photo(2) })
-        };
-
-        [HttpGet]
-        public IActionResult GetAllPoints()
-        {
-            return Ok(Points);
+            return NotFound($"Photo with ID {id} not found.");
         }
-
-        [HttpGet("{id}")]
-        public IActionResult GetPoint(uint id)
-        {
-            var point = Points.FirstOrDefault(p => p.UId == id);
-            if (point == null)
-                return NotFound(new { Message = "Point not found" });
-            
-            return Ok(point);
-        }
+        return Ok(photo);
     }
 }

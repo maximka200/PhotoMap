@@ -1,6 +1,6 @@
 namespace PhotoMapAPI.Models;
 
-public class PointOnMap()
+public class Point
 {
     public readonly uint UId;
     public string Name { get; set; }
@@ -9,8 +9,7 @@ public class PointOnMap()
     public double Longitude { get; set; }
     public List<Photo> Photo { get; set; }
 
-    public PointOnMap(string name, string? Description, 
-        uint uId, double latitude, double longitude, List<Photo> photo) : this()
+    public Point(string name, string? description, uint uId, double latitude, double longitude, List<Photo> photo)
     {
         Name = name; 
         UId = uId;
