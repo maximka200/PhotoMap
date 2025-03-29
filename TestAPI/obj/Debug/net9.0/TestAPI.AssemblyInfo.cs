@@ -10,12 +10,12 @@
 using System;
 using System.Reflection;
 
-[assembly: System.Reflection.AssemblyCompanyAttribute("PhotoMapAPI")]
+[assembly: System.Reflection.AssemblyCompanyAttribute("TestAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7c24b034d5d7ca022b4ff4cdbb724fc194f800b7")]
-[assembly: System.Reflection.AssemblyProductAttribute("PhotoMapAPI")]
-[assembly: System.Reflection.AssemblyTitleAttribute("PhotoMapAPI")]
+[assembly: System.Reflection.AssemblyProductAttribute("TestAPI")]
+[assembly: System.Reflection.AssemblyTitleAttribute("TestAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
 
 // Создано классом WriteCodeFragment MSBuild.
