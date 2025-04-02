@@ -1,20 +1,26 @@
-namespace PhotoMapAPI.Models;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-public class Point
+namespace PhotoMapAPI.Models
 {
-    public readonly uint UId;
-    public string Name { get; set; }
-    public string? Description { get; set; }
-    public double Latitude { get; set; }
-    public double Longitude { get; set; }
-    public List<Photo> Photo { get; set; }
-
-    public Point(string name, string? description, uint uId, double latitude, double longitude, List<Photo> photo)
+    public class Point
     {
-        Name = name; 
-        UId = uId;
-        Latitude = latitude;
-        Longitude = longitude;
-        Photo = photo;
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public uint UId { get; private set; }
+        
+        public string Name { get; set; }
+        public string? Description { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
+        public List<Photo> Photo { get; set; }
+
+        public Point(string name, string? description, double latitude, double longitude, List<Photo> photo)
+        {
+            Name = name; 
+            Latitude = latitude;
+            Longitude = longitude;
+            Photo = photo;
+        }
     }
 }

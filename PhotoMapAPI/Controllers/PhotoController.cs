@@ -1,26 +1,28 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace PhotoMapAPI.Controllers;
-
-[ApiController]
-[Route("api/photos/[controller]")]
-public class PhotoController : ControllerBase
+namespace PhotoMapAPI.Controllers
 {
-    private readonly IPhotoServices photoServices;
+    [ApiController]
+    [Route("api/photos")]
+    public class PhotoController : ControllerBase
+    {
+        private readonly IPhotoServices photoServices;
 
-    public PhotoController(IPhotoServices photoServices)
-    {
-        this.photoServices = photoServices;
-    }
-    
-    [HttpGet("{id}")]
-    public IActionResult GetPhotoById(int id)
-    {
-        var photo = photoServices.GetPhotoById(id);
-        if (photo == null)
+        public PhotoController(IPhotoServices photoServices)
         {
-            return NotFound($"Photo with ID {id} not found.");
+            this.photoServices = photoServices;
         }
-        return Ok(photo);
+
+        // GET: api/photos/{id}
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetPhotoById(uint id)
+        {
+            var photo = await photoServices.GetPhotoById(id);
+            if (photo == null)
+            {
+                return NotFound($"Photo with ID {id} not found.");
+            }
+            return Ok(photo);
+        }
     }
 }

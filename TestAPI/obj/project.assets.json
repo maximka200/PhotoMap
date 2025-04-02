@@ -805,19 +805,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\sterb\\.nuget\\packages\\": {}
+    "/Users/maximgolovnev/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\sterb\\RiderProjects\\PhotoMap\\TestAPI\\TestAPI.csproj",
+      "projectUniqueName": "/Users/maximgolovnev/RiderProjects/Photo-Map/TestAPI/TestAPI.csproj",
       "projectName": "TestAPI",
-      "projectPath": "C:\\Users\\sterb\\RiderProjects\\PhotoMap\\TestAPI\\TestAPI.csproj",
-      "packagesPath": "C:\\Users\\sterb\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\sterb\\RiderProjects\\PhotoMap\\TestAPI\\obj\\",
+      "projectPath": "/Users/maximgolovnev/RiderProjects/Photo-Map/TestAPI/TestAPI.csproj",
+      "packagesPath": "/Users/maximgolovnev/.nuget/packages/",
+      "outputPath": "/Users/maximgolovnev/RiderProjects/Photo-Map/TestAPI/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\sterb\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "/Users/maximgolovnev/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net9.0"
@@ -839,9 +839,8 @@
       "restoreAuditProperties": {
         "enableAudit": "true",
         "auditLevel": "low",
-        "auditMode": "direct"
-      },
-      "SdkAnalysisLevel": "9.0.200"
+        "auditMode": "all"
+      }
     },
     "frameworks": {
       "net9.0": {
@@ -884,7 +883,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.202/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.100/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

@@ -1,9 +1,10 @@
 ﻿using PhotoMapAPI.Models;
+using PhotoMapAPI.Repositories;
 
 namespace PhotoMapAPI.Controllers;
 
 public interface IPointServices
 {
-    List<Point> GetAllPointsInEkaterinburg();
-    Point GetPointById(int id);
+    Task<List<Point>?> GetAllPointsInEkaterinburg();
+    Task<Point?> GetPointById(uint id);
 }

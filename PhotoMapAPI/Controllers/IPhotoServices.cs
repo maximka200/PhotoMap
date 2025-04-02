@@ -1,6 +1,8 @@
-﻿namespace PhotoMapAPI.Controllers;
+﻿using PhotoMapAPI.Models;
+
+namespace PhotoMapAPI.Controllers;
 
 public interface IPhotoServices
 {
-    Models.Photo GetPhotoById(int id);
+    Task<Photo?> GetPhotoById(uint id);
 }

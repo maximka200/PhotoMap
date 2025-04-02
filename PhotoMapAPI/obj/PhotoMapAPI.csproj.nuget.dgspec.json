@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\sterb\\RiderProjects\\PhotoMap\\PhotoMapAPI\\PhotoMapAPI.csproj": {}
+    "/Users/maximgolovnev/RiderProjects/Photo-Map/PhotoMapAPI/PhotoMapAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\sterb\\RiderProjects\\PhotoMap\\PhotoMapAPI\\PhotoMapAPI.csproj": {
+    "/Users/maximgolovnev/RiderProjects/Photo-Map/PhotoMapAPI/PhotoMapAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\sterb\\RiderProjects\\PhotoMap\\PhotoMapAPI\\PhotoMapAPI.csproj",
+        "projectUniqueName": "/Users/maximgolovnev/RiderProjects/Photo-Map/PhotoMapAPI/PhotoMapAPI.csproj",
         "projectName": "PhotoMapAPI",
-        "projectPath": "C:\\Users\\sterb\\RiderProjects\\PhotoMap\\PhotoMapAPI\\PhotoMapAPI.csproj",
-        "packagesPath": "C:\\Users\\sterb\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\sterb\\RiderProjects\\PhotoMap\\PhotoMapAPI\\obj\\",
+        "projectPath": "/Users/maximgolovnev/RiderProjects/Photo-Map/PhotoMapAPI/PhotoMapAPI.csproj",
+        "packagesPath": "/Users/maximgolovnev/.nuget/packages/",
+        "outputPath": "/Users/maximgolovnev/RiderProjects/Photo-Map/PhotoMapAPI/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\sterb\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "/Users/maximgolovnev/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
@@ -36,9 +36,8 @@
         "restoreAuditProperties": {
           "enableAudit": "true",
           "auditLevel": "low",
-          "auditMode": "direct"
-        },
-        "SdkAnalysisLevel": "9.0.200"
+          "auditMode": "all"
+        }
       },
       "frameworks": {
         "net9.0": {
@@ -47,6 +46,26 @@
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[9.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[9.0.1, )"
+            },
+            "Swashbuckle.AspNetCore.Swagger": {
+              "target": "Package",
+              "version": "[8.1.0, )"
+            },
+            "Swashbuckle.AspNetCore.SwaggerGen": {
+              "target": "Package",
+              "version": "[8.1.0, )"
+            },
+            "Swashbuckle.AspNetCore.SwaggerUI": {
+              "target": "Package",
+              "version": "[8.1.0, )"
             }
           },
           "imports": [
@@ -68,7 +87,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.202/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

@@ -4,19 +4,21 @@ using PhotoMapAPI.Models;
 namespace PhotoMapAPI.Controllers
 {
     [ApiController]
-    [Route("api/points/[controller]")]
+    [Route("api/points")]
     public class PointController : ControllerBase
     {
-        private IPointServices pointServices;
+        private readonly IPointServices pointServices;
 
         public PointController(IPointServices pointServices)
         {
             this.pointServices = pointServices;
         }
-        
-        public IActionResult GetAllPointsInEkaterinburg()
+
+        // GET: api/points/ekaterinburg
+        [HttpGet("ekaterinburg")]
+        public async Task<IActionResult> GetAllPointsInEkaterinburg()
         {
-            var points = pointServices.GetAllPointsInEkaterinburg();
+            var points = await pointServices.GetAllPointsInEkaterinburg();
             if (points == null || points.Count == 0)
             {
                 return NotFound("No points found in Ekaterinburg.");
@@ -24,9 +26,11 @@ namespace PhotoMapAPI.Controllers
             return Ok(points);
         }
 
-        public IActionResult GetPointById(int id)
+        // GET: api/points/{id}
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetPointById(uint id)
         {
-            var point = pointServices.GetPointById(id);
+            var point = await pointServices.GetPointById(id);
             if (point == null)
             {
                 return NotFound($"Point with ID {id} not found.");
