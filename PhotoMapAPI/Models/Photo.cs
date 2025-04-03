@@ -11,6 +11,10 @@ public class Photo
     public uint UId { get; private set; }
     public string Path => this.GetPhotoPath();
 
+    public Photo()
+    {
+        // empty builder
+    }
     public Photo(uint uId)
     {
         UId = uId;

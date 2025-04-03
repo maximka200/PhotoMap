@@ -15,6 +15,11 @@ namespace PhotoMapAPI.Models
         public double Longitude { get; set; }
         public List<Photo> Photo { get; set; }
 
+        public Point()
+        {
+            // empty builder
+        }
+        
         public Point(string name, string? description, double latitude, double longitude, List<Photo> photo)
         {
             Name = name; 
