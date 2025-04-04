@@ -8,24 +8,21 @@ namespace PhotoMapAPI.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public uint UId { get; private set; }
-        
+
         public string Name { get; set; }
         public string? Description { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
-        public List<Photo> Photo { get; set; }
-
-        public Point()
-        {
-            // empty builder
-        }
         
-        public Point(string name, string? description, double latitude, double longitude, List<Photo> photo)
+
+        public List<Photo>? Photos { get; set; } = new();
+
+        public Point(string name, string? description, double latitude, double longitude)
         {
-            Name = name; 
+            Name = name;
+            Description = description;
             Latitude = latitude;
             Longitude = longitude;
-            Photo = photo;
         }
     }
 }

@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using PhotoMapAPI.Controllers;
+using PhotoMapAPI.Data;
 using PhotoMapAPI.Models;
 using PhotoMapAPI.Repositories;
 using PhotoMapAPI.Services;
@@ -23,6 +24,7 @@ builder.Services.AddScoped<IRepository<Photo>, Repository<Photo>>();
 builder.Services.AddScoped<IPhotoServices, PhotoServices>();
 builder.Services.AddScoped<IRepository<Point>, Repository<Point>>();
 builder.Services.AddScoped<IPointServices, PointServices>();
+builder.Services.AddScoped<IPhotoUploadServices, PhotoUploadServices>();
 
 // Add controllers
 builder.Services.AddControllers();
@@ -81,6 +83,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 app.UseAuthorization();
 app.MapControllers();
 

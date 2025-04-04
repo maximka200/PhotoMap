@@ -1,25 +1,22 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Xml.Linq;
-
-namespace PhotoMapAPI.Models;
+using PhotoMapAPI.Models;
 
 public class Photo
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public uint UId { get; private set; }
-    public string Path => this.GetPhotoPath();
 
-    public Photo()
-    {
-        // empty builder
-    }
-    public Photo(uint uId)
-    {
-        UId = uId;
-    }
+    public string Url { get; set; }
     
-    private string GetPhotoPath()
-        => $"{UId.ToString()}{FileExtensions.Jpg}";
+    [ForeignKey("Point")]
+    public uint PointId { get; set; }
+    public Point Point { get; set; }
+
+    public Photo(string url, uint pointId)
+    {
+        Url = url;
+        PointId = pointId;
+    }
 }

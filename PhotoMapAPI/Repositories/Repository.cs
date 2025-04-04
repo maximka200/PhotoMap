@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using PhotoMapAPI.Data;
 
 namespace PhotoMapAPI.Repositories;
 
@@ -6,43 +7,77 @@ public class Repository<T> : IRepository<T> where T : class
 {
     private readonly ApplicationDbContext context;
     private readonly DbSet<T> dbSet;
-
-    public Repository(ApplicationDbContext context)
+    private readonly ILogger<T> logger;
+    
+    public Repository(ApplicationDbContext context, ILogger<T> logger)
     {
         this.context = context;
+        this.logger = logger;
         dbSet = context.Set<T>();
     }
 
     public async Task<List<T>?> GetAllAsync()
     {
-        return await dbSet.ToListAsync();
+        try
+        {
+            return await dbSet.ToListAsync();
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Error: {ex}");
+            return null;
+        }
     }
 
     public async Task<T?> GetByIdAsync(uint id)
     {
-        return await dbSet.FindAsync(id);
+        try
+        {
+            return await dbSet.FindAsync(id);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Error: {ex}");
+            return null;
+        }
     }
 
     public async Task AddAsync(T entity)
     {
-        await dbSet.AddAsync(entity);
-        await context.SaveChangesAsync();
+        try
+        {
+            await dbSet.AddAsync(entity);
+            await context.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Error: {ex}");
+        }
     }
 
     public async Task UpdateAsync(T entity)
     {
-        dbSet.Update(entity);
-        await context.SaveChangesAsync();
+        try
+        {
+            dbSet.Update(entity);
+            await context.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Error: {ex}");
+        }
     }
 
     public async Task DeleteAsync(T entity)
     {
-        dbSet.Remove(entity);
-        await context.SaveChangesAsync();
-    }
-
-    public async Task GetAllPoint()
-    {
-        
+        try
+        {
+            dbSet.Remove(entity);
+            await context.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Error: {ex}");
+        }
     }
 }

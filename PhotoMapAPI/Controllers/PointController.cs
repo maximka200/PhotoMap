@@ -35,7 +35,20 @@ namespace PhotoMapAPI.Controllers
             {
                 return NotFound($"Point with ID {id} not found.");
             }
-            return Ok(point);
+            return Ok(point.UId);
+        }
+        
+        // POST: api/points
+        [HttpPost]
+        public async Task<IActionResult> AddPoint([FromBody] Point point)
+        {
+            if (point == null)
+            {
+                return BadRequest("Point is null.");
+            }
+
+            await pointServices.AddPoint(point);
+            return CreatedAtAction(nameof(GetPointById), new { id = point.UId }, point);
         }
     }
 }

@@ -1,21 +1,24 @@
 using Microsoft.EntityFrameworkCore;
 using PhotoMapAPI.Models;
 
-namespace PhotoMapAPI.Repositories;
-
-public class ApplicationDbContext : DbContext
+namespace PhotoMapAPI.Data
 {
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
-
-    public DbSet<Point> Points { get; set; }
-    public DbSet<Photo> Photos { get; set; }
-    
-    
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    public class ApplicationDbContext : DbContext
     {
-        modelBuilder.Entity<Point>()
-            .HasMany(p => p.Photo)
-            .WithOne()
-            .OnDelete(DeleteBehavior.Cascade);
+        public DbSet<Point> Points { get; set; }
+        public DbSet<Photo> Photos { get; set; }
+
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Photo>()
+                .HasOne(p => p.Point)
+                .WithMany(p => p.Photos)
+                .HasForeignKey(p => p.PointId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }
