@@ -6,10 +6,10 @@ namespace PhotoMapAPI.Services;
 
 public class PhotoServices : IPhotoServices
 {
-    private readonly IRepository<Photo> repository;
+    private readonly IPhotoRepository repository;
     private readonly IWebHostEnvironment env;
     private readonly ILogger<PhotoServices> logger;
-    public PhotoServices(IRepository<Photo> repository, IWebHostEnvironment env, ILogger<PhotoServices> logger)
+    public PhotoServices(IPhotoRepository repository, IWebHostEnvironment env, ILogger<PhotoServices> logger)
     {
         this.env = env;
         this.logger = logger;
@@ -17,6 +17,7 @@ public class PhotoServices : IPhotoServices
     }
     public async Task<Photo?> GetPhotoById(uint id)
     {
+        logger.Log(LogLevel.Information,$"{nameof(GetPhotoById)} called with id: {id}");
         return await repository.GetByIdAsync(id);
     }
 }

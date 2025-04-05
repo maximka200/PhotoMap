@@ -28,6 +28,7 @@ public class PhotoUploadServices : IPhotoUploadServices
 
     public async Task<string> UploadPhotoAsync(IFormFile file, uint pointId)
     {
+        logger.Log(LogLevel.Information, $"{nameof(UploadPhotoAsync)} called with pointId: {pointId}");
         if (file == null || file.Length == 0)
             throw new ArgumentException("Файл не загружен.");
 
@@ -43,9 +44,10 @@ public class PhotoUploadServices : IPhotoUploadServices
 
             // Создаём запись в БД без URL, чтобы получить UId
             var newPhoto = new Photo("", pointId);
+            point.AddPhoto(newPhoto);
             await photoRepository.AddAsync(newPhoto);
-            await dbContext.SaveChangesAsync(); // Фиксируем, чтобы получить UId
-
+            await dbContext.SaveChangesAsync();
+            
             // Определяем расширение файла
             var fileExtension = Path.GetExtension(file.FileName);
             var fileName = $"{newPhoto.UId}{fileExtension}"; // Пример: 1.jpg, 2.png

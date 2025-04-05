@@ -16,7 +16,14 @@ namespace PhotoMapAPI.Models
         
 
         public List<Photo>? Photos { get; set; } = new();
-
+        public void AddPhoto(Photo photo)
+        {
+            if (Photos == null)
+            {
+                Photos = new List<Photo>();
+            }
+            Photos.Add(photo);
+        }
         public Point(string name, string? description, double latitude, double longitude)
         {
             Name = name;

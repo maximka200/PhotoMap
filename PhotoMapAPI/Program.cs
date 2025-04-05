@@ -20,9 +20,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Register repositories and services
-builder.Services.AddScoped<IRepository<Photo>, Repository<Photo>>();
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+builder.Services.AddScoped<IPhotoRepository, PhotoRepository>();
+builder.Services.AddScoped<IPointRepository, PointRepository>();
 builder.Services.AddScoped<IPhotoServices, PhotoServices>();
-builder.Services.AddScoped<IRepository<Point>, Repository<Point>>();
 builder.Services.AddScoped<IPointServices, PointServices>();
 builder.Services.AddScoped<IPhotoUploadServices, PhotoUploadServices>();
 

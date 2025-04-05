@@ -32,7 +32,7 @@ namespace PhotoMapAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Ошибка сервера: {ex.Message}");
+                return StatusCode(500, $"Server error: {ex.Message}");
             }
         }
     }

@@ -35,7 +35,7 @@ namespace PhotoMapAPI.Controllers
             {
                 return NotFound($"Point with ID {id} not found.");
             }
-            return Ok(point.UId);
+            return Ok(point);
         }
         
         // POST: api/points
