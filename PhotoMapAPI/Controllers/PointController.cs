@@ -50,5 +50,13 @@ namespace PhotoMapAPI.Controllers
             await pointServices.AddPoint(point);
             return CreatedAtAction(nameof(GetPointById), new { id = point.UId }, point);
         }
+        
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> DeletePoint(uint id)
+        {
+            await pointServices.DeletePoint(id);
+            return NoContent();
+        }
     }
 }

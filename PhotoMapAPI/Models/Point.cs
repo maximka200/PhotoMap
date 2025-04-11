@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace PhotoMapAPI.Models
 {
@@ -14,7 +15,7 @@ namespace PhotoMapAPI.Models
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         
-
+        [JsonIgnore]
         public List<Photo>? Photos { get; set; } = new();
         public void AddPhoto(Photo photo)
         {

@@ -19,16 +19,20 @@ namespace PhotoMapAPI.Controllers
         {
             try
             {
+                if (file == null || !Path.GetExtension(file.FileName).Equals(".jpg", StringComparison.OrdinalIgnoreCase))
+                {
+                    throw new ArgumentException("only .jpg");
+                }
                 var photoUrl = await photoServices.UploadPhotoAsync(file, pointId);
                 return Ok(new { Url = photoUrl });
             }
             catch (ArgumentException ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest($"Invalid format: {ex.Message}");
             }
             catch (KeyNotFoundException ex)
             {
-                return NotFound(ex.Message);
+                return NotFound("Point not found");
             }
             catch (Exception ex)
             {
