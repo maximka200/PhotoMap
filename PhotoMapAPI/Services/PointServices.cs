@@ -1,6 +1,8 @@
-﻿using PhotoMapAPI.Controllers;
-using PhotoMapAPI.Models;
+﻿using PhotoMapAPI.Models;
 using PhotoMapAPI.Repositories;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Hosting;
+using PhotoMapAPI.Controllers;
 
 namespace PhotoMapAPI.Services;
 
@@ -11,8 +13,11 @@ public class PointServices : IPointServices
     private readonly ILogger<PointServices> logger;
     private readonly IWebHostEnvironment env;
     
-    public PointServices(IPointRepository repositoryPoint, IPhotoRepository repositoryPhoto,
-        ILogger<PointServices> logger, IWebHostEnvironment env)
+    public PointServices(
+        IPointRepository repositoryPoint, 
+        IPhotoRepository repositoryPhoto,
+        ILogger<PointServices> logger, 
+        IWebHostEnvironment env)
     {
         this.logger = logger;
         this.repositoryPoint = repositoryPoint;
@@ -20,80 +25,118 @@ public class PointServices : IPointServices
         this.env = env;
     }
     
-    public async Task<List<Point>?> GetAllPointsInEkaterinburg()
+    public async Task<List<Point>> GetAllPointsInEkaterinburg()
     {
-        logger.Log(LogLevel.Information,$"{nameof(GetAllPointsInEkaterinburg)} called");
-        var allPoints = await repositoryPoint.GetAllAsync();
-        foreach (var point in allPoints)
+        logger.LogInformation("{Method} called", nameof(GetAllPointsInEkaterinburg));
+        
+        try
         {
-            var photos = await repositoryPhoto.GetAllInPointAsync(point.UId);
-            point.Photos = photos;
-        }
+            var allPoints = await repositoryPoint.GetAllAsync();
+            
+            foreach (var point in allPoints)
+            {
+                point.Photos = await repositoryPhoto.GetAllInPointAsync(point.UId);
+            }
 
-        return allPoints;
+            return allPoints;
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Error in {Method}", nameof(GetAllPointsInEkaterinburg));
+            throw;
+        }
     }
     
     public async Task<Point?> GetPointById(uint id)
     {
-        logger.Log(LogLevel.Information,$"{nameof(GetPointById)} called with id: {id}");
-        var point = await repositoryPoint.GetByIdAsync(id);
-        if (point == null)
+        logger.LogInformation("{Method} called with id: {Id}", nameof(GetPointById), id);
+        
+        try
         {
-            logger.Log(LogLevel.Warning,$"{nameof(GetPointById)} point with id: {id} not found");
-            return null;
+            var point = await repositoryPoint.GetByIdAsync(id);
+            if (point == null)
+            {
+                logger.LogWarning("{Method} point with id: {Id} not found", nameof(GetPointById), id);
+                return null;
+            }
+            
+            point.Photos = await repositoryPhoto.GetAllInPointAsync(point.UId);
+            return point;
         }
-        point.Photos = await repositoryPhoto.GetAllInPointAsync(point.UId);
-        return point;
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Error in {Method} with id: {Id}", nameof(GetPointById), id);
+            throw;
+        }
     }
+
     public async Task AddPoint(Point point)
     {
-        logger.Log(LogLevel.Information,$"{nameof(AddPoint)} called with point: {point.UId}");
-        await repositoryPoint.AddAsync(point);
+        logger.LogInformation("{Method} called with point: {PointId}", nameof(AddPoint), point.UId);
+        
+        try
+        {
+            await repositoryPoint.AddAsync(point);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Error in {Method}", nameof(AddPoint));
+            throw;
+        }
     }
 
     public async Task DeletePoint(uint id)
     {
-        logger.Log(LogLevel.Information, $"{nameof(DeletePoint)} called with id: {id}");
-        var point = await repositoryPoint.GetByIdAsync(id);
-        if (point == null)
+        logger.LogInformation("{Method} called with id: {Id}", nameof(DeletePoint), id);
+        
+        try
         {
-            logger.Log(LogLevel.Warning, $"{nameof(DeletePoint)} point with id: {id} not found");
+            var point = await repositoryPoint.GetByIdAsync(id);
+            if (point == null)
+            {
+                logger.LogWarning("{Method} point with id: {Id} not found", nameof(DeletePoint), id);
+                return;
+            }
+
+            await DeletePhotoFiles(point);
+            await repositoryPoint.DeleteAsync(point);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Error in {Method} with id: {Id}", nameof(DeletePoint), id);
+            throw;
+        }
+    }
+
+    private async Task DeletePhotoFiles(Point point)
+    {
+        var photos = await repositoryPhoto.GetAllInPointAsync(point.UId);
+        
+        if (photos.Count == 0) return;
+
+        var directoryPath = Path.Combine(env.WebRootPath, "uploads");
+        
+        if (!Directory.Exists(directoryPath))
+        {
+            logger.LogWarning("Directory not found: {DirectoryPath}", directoryPath);
             return;
         }
 
-        var photos = await repositoryPhoto.GetAllInPointAsync(point.UId);
-        
-        if (photos.Count != 0)
+        foreach (var photo in photos)
         {
-            foreach (var photo in point.Photos)
+            try
             {
-                var directoryPath = Path.Combine(env.WebRootPath, "uploads");
-                
-                if (Directory.Exists(directoryPath))
+                var files = Directory.GetFiles(directoryPath, $"{photo.UId}.*");
+                foreach (var file in files)
                 {
-                    var files = Directory.GetFiles(directoryPath, $"{photo.UId}.*");
-        
-                    foreach (var file in files)
-                    {
-                        try
-                        {
-                            File.Delete(file);
-                            logger.Log(LogLevel.Information, $"Deleted file: {file}");
-                        }
-                        catch (Exception ex)
-                        {
-                            logger.Log(LogLevel.Error, $"Error deleting file {file}: {ex.Message}");
-                        }
-                    }
-                }
-                else
-                {
-                    logger.Log(LogLevel.Warning, $"Directory not found: {directoryPath}");
+                    File.Delete(file);
+                    logger.LogInformation("Deleted file: {FilePath}", file);
                 }
             }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error deleting files for photo ID: {PhotoId}", photo.UId);
+            }
         }
-
-        await repositoryPoint.DeleteAsync(point);
     }
-
 }

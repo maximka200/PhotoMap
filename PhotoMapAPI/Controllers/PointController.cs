@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using PhotoMapAPI.Models;
+using PhotoMapAPI.DTOs;
 
 namespace PhotoMapAPI.Controllers
 {
@@ -8,55 +9,88 @@ namespace PhotoMapAPI.Controllers
     public class PointController : ControllerBase
     {
         private readonly IPointServices pointServices;
+        private readonly ILogger<PointController> logger;
 
-        public PointController(IPointServices pointServices)
+        public PointController(IPointServices pointServices, ILogger<PointController> logger)
         {
             this.pointServices = pointServices;
+            this.logger = logger;
         }
 
-        // GET: api/points/ekaterinburg
         [HttpGet("ekaterinburg")]
         public async Task<IActionResult> GetAllPointsInEkaterinburg()
         {
-            var points = await pointServices.GetAllPointsInEkaterinburg();
-            if (points == null || points.Count == 0)
+            try
             {
-                return NotFound("No points found in Ekaterinburg.");
+                var points = await pointServices.GetAllPointsInEkaterinburg();
+                return points == null || !points.Any() 
+                    ? NotFound("No points found in Ekaterinburg.") 
+                    : Ok(points);
             }
-            return Ok(points);
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error getting points in Ekaterinburg");
+                return StatusCode(500, "Internal server error");
+            }
         }
 
-        // GET: api/points/{id}
         [HttpGet("{id}")]
         public async Task<IActionResult> GetPointById(uint id)
         {
-            var point = await pointServices.GetPointById(id);
-            if (point == null)
+            try
             {
-                return NotFound($"Point with ID {id} not found.");
+                var point = await pointServices.GetPointById(id);
+                return point == null 
+                    ? NotFound($"Point with ID {id} not found.") 
+                    : Ok(point);
             }
-            return Ok(point);
+            catch (Exception ex)
+            {
+                logger.LogError(ex, $"Error getting point with ID {id}");
+                return StatusCode(500, "Internal server error");
+            }
         }
         
-        // POST: api/points
         [HttpPost]
-        public async Task<IActionResult> AddPoint([FromBody] Point point)
+        public async Task<IActionResult> AddPoint([FromBody] PointCreateDto pointDto)
         {
-            if (point == null)
+            if (!ModelState.IsValid)
             {
-                return BadRequest("Point is null.");
+                return BadRequest(ModelState);
             }
 
-            await pointServices.AddPoint(point);
-            return CreatedAtAction(nameof(GetPointById), new { id = point.UId }, point);
+            try
+            {
+                var point = new Point(
+                    name: pointDto.Name,
+                    description: pointDto.Description,
+                    latitude: pointDto.Latitude,
+                    longitude: pointDto.Longitude
+                );
+
+                await pointServices.AddPoint(point);
+                return CreatedAtAction(nameof(GetPointById), new { id = point.UId }, point);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error adding new point");
+                return StatusCode(500, "Internal server error");
+            }
         }
         
-        [HttpDelete]
-        [Route("{id}")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePoint(uint id)
         {
-            await pointServices.DeletePoint(id);
-            return NoContent();
+            try
+            {
+                await pointServices.DeletePoint(id);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, $"Error deleting point with ID {id}");
+                return StatusCode(500, "Internal server error");
+            }
         }
     }
 }
