@@ -13,7 +13,7 @@ public class Photo
     [ForeignKey("Point")]
     public uint PointId { get; set; }
     public Point Point { get; set; }
-
+    
     public Photo(string url, uint pointId)
     {
         Url = url;

@@ -30,11 +30,11 @@ public class PhotoUploadServices : IPhotoUploadServices
     {
         logger.Log(LogLevel.Information, $"{nameof(UploadPhotoAsync)} called with pointId: {pointId}");
         if (file == null || file.Length == 0)
-            throw new ArgumentException("Файл не загружен.");
+            throw new ArgumentException("File not download");
 
         var point = await pointRepository.GetByIdAsync(pointId);
         if (point == null)
-            throw new KeyNotFoundException("Точка не найдена.");
+            throw new KeyNotFoundException("Point not find");
 
         using var transaction = await dbContext.Database.BeginTransactionAsync();
         try
@@ -70,8 +70,8 @@ public class PhotoUploadServices : IPhotoUploadServices
         catch (Exception ex)
         {
             await transaction.RollbackAsync(); // Откат всех изменений, если ошибка
-            logger.LogError(ex, "Ошибка при загрузке фото");
-            throw new Exception("Ошибка при сохранении фото.");
+            logger.LogError(ex, "Error with download photo");
+            throw new Exception("Error with download photo", ex);
         }
     }
 }

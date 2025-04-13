@@ -24,5 +24,24 @@ namespace PhotoMapAPI.Controllers
             }
             return Ok(photo);
         }
+        
+        // DELETE: api/photos/{id}
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeletePhoto(uint id)
+        {
+            try
+            {
+                await photoServices.DeletePhoto(id);
+                return NoContent();
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound($"Photo with ID {id} not found.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Server error: {ex.Message}");
+            }
+        }
     }
 }
