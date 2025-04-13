@@ -16,7 +16,8 @@ namespace PhotoMapAPI.Controllers
             this.pointServices = pointServices;
             this.logger = logger;
         }
-
+        
+        // POST: api/photos/ekaterinburg
         [HttpGet("ekaterinburg")]
         public async Task<IActionResult> GetAllPointsInEkaterinburg()
         {
@@ -33,7 +34,8 @@ namespace PhotoMapAPI.Controllers
                 return StatusCode(500, "Internal server error");
             }
         }
-
+        
+        // GET: api/photos/{id}
         [HttpGet("{id}")]
         public async Task<IActionResult> GetPointById(uint id)
         {
@@ -51,6 +53,7 @@ namespace PhotoMapAPI.Controllers
             }
         }
         
+        // POST: api/photos/{id}
         [HttpPost]
         public async Task<IActionResult> AddPoint([FromBody] PointCreateDto pointDto)
         {
@@ -78,6 +81,7 @@ namespace PhotoMapAPI.Controllers
             }
         }
         
+        // DELETE: api/photos/{id}
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePoint(uint id)
         {

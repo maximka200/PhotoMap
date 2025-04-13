@@ -43,5 +43,7 @@ namespace PhotoMapAPI.Controllers
                 return StatusCode(500, $"Server error: {ex.Message}");
             }
         }
+        
+        //TODO: UPDATE: api/photos/{id}
     }
 }

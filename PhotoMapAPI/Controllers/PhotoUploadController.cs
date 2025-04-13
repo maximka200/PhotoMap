@@ -13,7 +13,8 @@ namespace PhotoMapAPI.Controllers
         {
             this.photoServices = photoServices;
         }
-
+        
+        // POST: api/photos/upload
         [HttpPost("upload")]
         public async Task<IActionResult> UploadImage(IFormFile file, [FromQuery] uint pointId)
         {
