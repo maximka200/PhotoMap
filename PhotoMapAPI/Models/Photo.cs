@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using PhotoMapAPI.Models;
 
 public class Photo
@@ -12,6 +13,7 @@ public class Photo
     
     [ForeignKey("Point")]
     public uint PointId { get; set; }
+    [JsonIgnore]
     public Point Point { get; set; }
     
     public Photo(string url, uint pointId)

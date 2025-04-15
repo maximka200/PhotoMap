@@ -14,8 +14,7 @@ namespace PhotoMapAPI.Models
         public string? Description { get; set; } = description;
         public double Latitude { get; set; } = latitude;
         public double Longitude { get; set; } = longitude;
-
-        [JsonIgnore]
+        
         public List<Photo>? Photos { get; set; } = new();
         public void AddPhoto(Photo photo)
         {
