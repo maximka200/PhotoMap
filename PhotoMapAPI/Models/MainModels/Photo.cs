@@ -16,6 +16,8 @@ public class Photo
     [JsonIgnore]
     public Point Point { get; set; }
     
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    
     public Photo(string url, uint pointId)
     {
         Url = url;
