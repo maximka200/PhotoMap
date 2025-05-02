@@ -17,6 +17,8 @@ public class Photo
     public Point Point { get; set; }
     
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    public HashSet<int> LikedList = new HashSet<int>(); // with User.Id
     
     public Photo(string url, uint pointId)
     {

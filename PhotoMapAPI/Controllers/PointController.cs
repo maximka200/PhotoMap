@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PhotoMapAPI.Models;
 using PhotoMapAPI.DTOs;
@@ -19,6 +20,7 @@ namespace PhotoMapAPI.Controllers
         
         // POST: api/photos/ekaterinburg
         [HttpGet("ekaterinburg")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAllPointsInEkaterinburg()
         {
             try
@@ -37,6 +39,7 @@ namespace PhotoMapAPI.Controllers
         
         // GET: api/photos/{id}
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetPointById(uint id)
         {
             try
@@ -55,6 +58,7 @@ namespace PhotoMapAPI.Controllers
         
         // POST: api/photos/{id}
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> AddPoint([FromBody] PointCreateDto pointDto)
         {
             if (!ModelState.IsValid)

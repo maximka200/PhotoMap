@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace PhotoMapAPI.Controllers
 {
@@ -14,6 +15,7 @@ namespace PhotoMapAPI.Controllers
         }
 
         // GET: api/photos/{id}
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetPhotoById(uint id)
         {
@@ -27,6 +29,7 @@ namespace PhotoMapAPI.Controllers
         
         // DELETE: api/photos/{id}
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeletePhoto(uint id)
         {
             try

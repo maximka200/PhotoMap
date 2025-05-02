@@ -1,9 +1,17 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace PhotoMapAPI.Models;
 
 public class Avatar
 {
-    public string Id { get; set; } = Guid.NewGuid().ToString();
-    public string UserId { get; set; } // Связь с пользователем
-    public string FilePath { get; set; } // Путь в wwwroot/Avatars
-    public DateTime UploadedAt { get; set; } = DateTime.UtcNow;
+    [Key]
+    public string UserId { get; private set; }
+    public string AvatarPath { get; set; } // Путь в wwwroot/Avatars
+    public readonly DateTime UploadedAt;
+
+    public Avatar(string userId, string avatarPath)
+    {
+        UserId = userId;
+        UploadedAt = DateTime.UtcNow;
+    }
 }

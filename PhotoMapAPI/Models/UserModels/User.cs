@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
+using PhotoMapAPI.Models;
 
 public class User : IdentityUser<string>
 {
@@ -8,5 +9,5 @@ public class User : IdentityUser<string>
     [Required]
     public List<Photo> LikedPhoto { get; set; } = new();
 
-    public string? AvatarPath { get; set; } // Путь к аватарке
+    public Avatar? UserAvatar { get; set; } // Путь к аватарке
 }

@@ -31,6 +31,7 @@ builder.Services.AddScoped<IPointRepository, PointRepository>();
 builder.Services.AddScoped<IPhotoServices, PhotoServices>();
 builder.Services.AddScoped<IPointServices, PointServices>();
 builder.Services.AddScoped<IPhotoUploadServices, PhotoUploadServices>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
@@ -42,6 +43,14 @@ builder.Services.AddAuthentication(options =>
     })
     .AddJwtBearer(options =>
     {
+        options.Events = new JwtBearerEvents
+        {
+            OnAuthenticationFailed = context =>
+            {
+                Console.WriteLine("Auth failed: " + context.Exception.Message);
+                return Task.CompletedTask;
+            }
+        };
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer           = true,

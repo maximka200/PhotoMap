@@ -19,22 +19,38 @@ public class AvatarController : ControllerBase
         _avatarService = avatarService;
         _userManager = userManager;
     }
-
-    [Authorize]
+    
     [HttpPost("upload")]
-    public async Task<IActionResult> UploadAvatar(IFormFile file)
+    // [Authorize]
+    public async Task<IActionResult> UploadAvatar(IFormFile file, [FromQuery] string userId)
     {
-        var userId = _userManager.GetUserId(User);
-        if (string.IsNullOrEmpty(userId)) return Unauthorized();
-
         try
         {
+            var currentUserId = _userManager.GetUserId(User);
+            if (string.IsNullOrEmpty(currentUserId))
+                userId = "0";
+
+            if (currentUserId != userId)
+                return StatusCode(403, "You can upload avatar only for yourself.");
+
+            var fileExt = Path.GetExtension(file.FileName);
+            if (!(fileExt == ".jpeg" || fileExt == ".jpg"))
+                throw new ArgumentException("Only .jpg files are allowed.");
+
             var avatarPath = await _avatarService.UploadAvatarAsync(file, userId);
             return Ok(new { Path = avatarPath });
         }
+        catch (ArgumentException ex)
+        {
+            return BadRequest($"Invalid file: {ex.Message}");
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound("User not found");
+        }
         catch (Exception ex)
         {
-            return BadRequest(ex.Message);
+            return StatusCode(500, $"Server error: {ex.Message}");
         }
     }
 

@@ -1,77 +1,106 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using PhotoMapAPI.Models;
-using System.IO;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using PhotoMapAPI.Data;
+using PhotoMapAPI.Models;
 
-public class AvatarService : IAvatarService
+namespace PhotoMapAPI.Services
 {
-    private readonly IWebHostEnvironment _environment;
-    private readonly UserManager<User> _userManager;
-    private readonly ApplicationDbContext _context;
-
-    public AvatarService(
-        IWebHostEnvironment environment,
-        UserManager<User> userManager,
-        ApplicationDbContext context)
+    public class AvatarService : IAvatarService
     {
-        _environment = environment;
-        _userManager = userManager;
-        _context = context;
-    }
+        private readonly IWebHostEnvironment env;
+        private readonly UserManager<User> userManager;
+        private readonly ApplicationDbContext dbContext;
+        private readonly ILogger<AvatarService> logger;
 
-    public async Task<string> UploadAvatarAsync(IFormFile file, string userId)
-    {
-        var user = await _userManager.FindByIdAsync(userId);
-        if (user == null) throw new Exception("User not found");
-
-        // Удаляем старый аватар (если есть)
-        await DeleteAvatarAsync(userId);
-
-        // Создаем папку Avatars, если её нет
-        var avatarsDir = Path.Combine(_environment.WebRootPath, "Avatars");
-        if (!Directory.Exists(avatarsDir))
-            Directory.CreateDirectory(avatarsDir);
-
-        // Генерируем уникальное имя файла
-        var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
-        var filePath = Path.Combine(avatarsDir, fileName);
-
-        // Сохраняем файл
-        using (var stream = new FileStream(filePath, FileMode.Create))
+        public AvatarService(IWebHostEnvironment env, UserManager<User> userManager,
+                              ApplicationDbContext dbContext, ILogger<AvatarService> logger)
         {
-            await file.CopyToAsync(stream);
+            this.env = env;
+            this.userManager = userManager;
+            this.dbContext = dbContext;
+            this.logger = logger;
         }
 
-        // Обновляем путь у пользователя
-        user.AvatarPath = $"/Avatars/{fileName}";
-        await _userManager.UpdateAsync(user);
-
-        return user.AvatarPath;
-    }
-
-    public async Task<bool> DeleteAvatarAsync(string userId)
-    {
-        var user = await _userManager.FindByIdAsync(userId);
-        if (user?.AvatarPath == null) return false;
-
-        var filePath = Path.Combine(_environment.WebRootPath, user.AvatarPath.TrimStart('/'));
-        if (File.Exists(filePath))
+        public async Task<string> UploadAvatarAsync(IFormFile file, string userId)
         {
-            File.Delete(filePath);
+            logger.LogInformation($"{nameof(UploadAvatarAsync)} called with userId: {userId}");
+            if (file == null || file.Length == 0)
+                throw new ArgumentException("File not uploaded.");
+
+            var user = await userManager.FindByIdAsync(userId);
+            if (user == null)
+                throw new KeyNotFoundException("User not found.");
+
+            using var transaction = await dbContext.Database.BeginTransactionAsync();
+            try
+            {
+                var avatarsFolder = Path.Combine(env.WebRootPath, "avatars");
+                Directory.CreateDirectory(avatarsFolder);
+
+                if (!(user.UserAvatar == null || string.IsNullOrEmpty(user.UserAvatar.AvatarPath)))
+                {
+                    var oldAvatarPath = Path.Combine(env.WebRootPath, user.UserAvatar.AvatarPath.TrimStart('/'));
+                    if (File.Exists(oldAvatarPath))
+                    {
+                        File.Delete(oldAvatarPath);
+                    }
+                }
+                
+                user.UserAvatar = new Avatar(userId, null);
+                
+                var extension = Path.GetExtension(file.FileName);
+                var fileName = user.Id + extension;
+                var filePath = Path.Combine(avatarsFolder, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+
+                user.UserAvatar.AvatarPath = $"/avatars/{fileName}";
+                await userManager.UpdateAsync(user);
+                await dbContext.SaveChangesAsync();
+
+                await transaction.CommitAsync();
+                return user.UserAvatar.AvatarPath;
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                logger.LogError(ex, "Error uploading avatar");
+                throw new Exception("Error uploading avatar", ex);
+            }
         }
 
-        user.AvatarPath = null;
-        await _userManager.UpdateAsync(user);
+        public async Task<bool> DeleteAvatarAsync(string userId)
+        {
+            logger.LogInformation($"{nameof(DeleteAvatarAsync)} called with userId: {userId}");
 
-        return true;
-    }
+            var user = await userManager.FindByIdAsync(userId);
+            if (user == null || string.IsNullOrEmpty(user.UserAvatar.AvatarPath))
+                return false;
 
-    public async Task<string?> GetAvatarPathAsync(string userId)
-    {
-        var user = await _userManager.FindByIdAsync(userId);
-        return user?.AvatarPath;
+            var avatarPath = Path.Combine(env.WebRootPath, user.UserAvatar.AvatarPath.TrimStart('/'));
+            if (File.Exists(avatarPath))
+            {
+                File.Delete(avatarPath);
+            }
+
+            user.UserAvatar.AvatarPath = null;
+            await userManager.UpdateAsync(user);
+            await dbContext.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<string?> GetAvatarPathAsync(string userId)
+        {
+            logger.LogInformation($"{nameof(GetAvatarPathAsync)} called with userId: {userId}");
+
+            var user = await userManager.FindByIdAsync(userId);
+            return user?.UserAvatar.AvatarPath;
+        }
     }
 }
