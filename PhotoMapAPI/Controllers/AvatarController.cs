@@ -38,6 +38,7 @@ public class AvatarController : ControllerBase
                 throw new ArgumentException("Only .jpg files are allowed.");
 
             var avatarPath = await _avatarService.UploadAvatarAsync(file, userId);
+            
             return Ok(new { Path = avatarPath });
         }
         catch (ArgumentException ex)

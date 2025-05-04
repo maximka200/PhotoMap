@@ -60,7 +60,17 @@ namespace PhotoMapAPI.Services
                 }
 
                 user.UserAvatar.AvatarPath = $"/avatars/{fileName}";
-                await userManager.UpdateAsync(user);
+                var existingAvatar = await dbContext.Avatars.FindAsync(user.Id);
+                if (existingAvatar != null)
+                {
+                    existingAvatar.AvatarPath = $"/avatars/{fileName}";
+                    dbContext.Avatars.Update(existingAvatar);
+                }
+                else
+                {
+                    user.UserAvatar = new Avatar(user.Id, $"/avatars/{fileName}");
+                    dbContext.Avatars.Add(user.UserAvatar);
+                }
                 await dbContext.SaveChangesAsync();
 
                 await transaction.CommitAsync();
@@ -79,16 +89,22 @@ namespace PhotoMapAPI.Services
             logger.LogInformation($"{nameof(DeleteAvatarAsync)} called with userId: {userId}");
 
             var user = await userManager.FindByIdAsync(userId);
-            if (user == null || string.IsNullOrEmpty(user.UserAvatar.AvatarPath))
+            if (user == null || user.UserAvatarId == null)
                 return false;
 
-            var avatarPath = Path.Combine(env.WebRootPath, user.UserAvatar.AvatarPath.TrimStart('/'));
+            var avatar = await dbContext.Avatars.FindAsync(user.UserAvatarId);
+            if (avatar == null)
+                return false;
+
+            var avatarPath = Path.Combine(env.WebRootPath, avatar.AvatarPath.TrimStart('/'));
             if (File.Exists(avatarPath))
             {
                 File.Delete(avatarPath);
             }
 
-            user.UserAvatar.AvatarPath = null;
+            dbContext.Avatars.Remove(avatar);
+            user.UserAvatarId = null;
+
             await userManager.UpdateAsync(user);
             await dbContext.SaveChangesAsync();
 
