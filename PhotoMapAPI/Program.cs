@@ -32,6 +32,7 @@ builder.Services.AddScoped<IPhotoServices, PhotoServices>();
 builder.Services.AddScoped<IPointServices, PointServices>();
 builder.Services.AddScoped<IPhotoUploadServices, PhotoUploadServices>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<UserService>();
 builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
