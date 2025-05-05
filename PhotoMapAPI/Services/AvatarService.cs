@@ -26,6 +26,7 @@ namespace PhotoMapAPI.Services
         public async Task<string> UploadAvatarAsync(IFormFile file, string userId)
         {
             logger.LogInformation($"{nameof(UploadAvatarAsync)} called with userId: {userId}");
+
             if (file == null || file.Length == 0)
                 throw new ArgumentException("File not uploaded.");
 
@@ -39,42 +40,38 @@ namespace PhotoMapAPI.Services
                 var avatarsFolder = Path.Combine(env.WebRootPath, "avatars");
                 Directory.CreateDirectory(avatarsFolder);
 
-                if (!(user.UserAvatar == null || string.IsNullOrEmpty(user.UserAvatar.AvatarPath)))
-                {
-                    var oldAvatarPath = Path.Combine(env.WebRootPath, user.UserAvatar.AvatarPath.TrimStart('/'));
-                    if (File.Exists(oldAvatarPath))
-                    {
-                        File.Delete(oldAvatarPath);
-                    }
-                }
-                
-                user.UserAvatar = new Avatar(userId, null);
-                
                 var extension = Path.GetExtension(file.FileName);
                 var fileName = user.Id + extension;
                 var filePath = Path.Combine(avatarsFolder, fileName);
+                
+                var avatarPath = $"/avatars/{fileName}";
+                var avatar = await dbContext.Avatars.FindAsync(user.Id);
+                if (avatar != null)
+                {
+                    var oldPath = Path.Combine(env.WebRootPath, avatar.AvatarPath.TrimStart('/'));
+                    if (File.Exists(oldPath))
+                        File.Delete(oldPath);
 
+                    avatar.AvatarPath = avatarPath;
+                    dbContext.Avatars.Update(avatar);
+                }
+                else
+                {
+                    avatar = new Avatar(user.Id, avatarPath);
+                    dbContext.Avatars.Add(avatar);
+                }
+                
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     await file.CopyToAsync(stream);
                 }
-
-                user.UserAvatar.AvatarPath = $"/avatars/{fileName}";
-                var existingAvatar = await dbContext.Avatars.FindAsync(user.Id);
-                if (existingAvatar != null)
-                {
-                    existingAvatar.AvatarPath = $"/avatars/{fileName}";
-                    dbContext.Avatars.Update(existingAvatar);
-                }
-                else
-                {
-                    user.UserAvatar = new Avatar(user.Id, $"/avatars/{fileName}");
-                    dbContext.Avatars.Add(user.UserAvatar);
-                }
+                
+                user.UserAvatarId = user.Id; // Привязка один к одному
+                await userManager.UpdateAsync(user);
                 await dbContext.SaveChangesAsync();
-
                 await transaction.CommitAsync();
-                return user.UserAvatar.AvatarPath;
+
+                return avatarPath;
             }
             catch (Exception ex)
             {
@@ -83,6 +80,7 @@ namespace PhotoMapAPI.Services
                 throw new Exception("Error uploading avatar", ex);
             }
         }
+
 
         public async Task<bool> DeleteAvatarAsync(string userId)
         {

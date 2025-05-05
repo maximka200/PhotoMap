@@ -9,6 +9,6 @@ public class User : IdentityUser<string>
     [Required]
     public List<Photo> LikedPhoto { get; set; } = new();
 
-    public int? UserAvatarId { get; set; }
+    public string? UserAvatarId { get; set; }
     public virtual Avatar? UserAvatar { get; set; }
 }

@@ -44,7 +44,11 @@ public class AuthController : ControllerBase
             }
 
             var token = await _authService.GenerateJwtTokenAsync(user);
-            return Ok(new { token });
+            return Ok(new
+            {
+                token,
+                user.Id
+            });
         }
         catch (Exception ex)
         {
@@ -71,9 +75,12 @@ public class AuthController : ControllerBase
             var errors = result.Errors.Select(e => e.Description);
             return BadRequest(new { Errors = errors });
         }
-
-        // Можно сразу вернуть токен
+        
         var token = await _authService.GenerateJwtTokenAsync(user);
-        return Ok(new { token });
+        return Ok(new
+        {
+            token,
+            user.Id
+        });
     }
 }
