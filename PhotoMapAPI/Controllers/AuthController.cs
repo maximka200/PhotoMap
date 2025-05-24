@@ -12,7 +12,7 @@ using PhotoMapAPI.Controllers;
 using PhotoMapAPI.DTOs;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/auth")]
 public class AuthController : ControllerBase
 {
     private readonly UserManager<User> _userManager;

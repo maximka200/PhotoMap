@@ -6,7 +6,7 @@ using PhotoMapAPI.Models;
 using System.Threading.Tasks;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/avatar/")]
 public class AvatarController : ControllerBase
 {
     private readonly IAvatarService _avatarService;

@@ -5,7 +5,7 @@ using PhotoMapAPI.Services;
 namespace PhotoMapAPI.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/user/")]
     public class UserController : ControllerBase
     {
         private readonly UserService _userService;
@@ -25,7 +25,7 @@ namespace PhotoMapAPI.Controllers
             return Ok(user);
         }
 
-        [HttpGet]
+        [HttpGet("all")]
         public async Task<IActionResult> GetAllUsers()
         {
             var users = await _userService.GetAllUsersAsync();
