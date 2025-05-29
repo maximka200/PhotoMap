@@ -20,4 +20,25 @@ public class PhotoRepository : Repository<Photo>, IPhotoRepository
 
         return photos;
     }
+
+    public async Task LikePhotoFromUserAsync(uint photoId, string userId)
+    {
+        var user = await context.Users
+            .Include(u => u.LikedPhotos)
+            .FirstOrDefaultAsync(u => u.Id == userId);
+
+        if (user == null)
+            throw new Exception("Пользователь не найден");
+
+        var photo = await context.Photos.FirstOrDefaultAsync(p => p.UId == photoId);
+
+        if (photo == null)
+            throw new Exception("Фото не найдено");
+        
+        if (!user.LikedPhotos.Any(p => p.UId == photoId))
+        {
+            user.LikedPhotos.Add(photo);
+            await context.SaveChangesAsync();
+        }
+    }
 }

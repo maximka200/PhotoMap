@@ -9,15 +9,15 @@ using System.Threading.Tasks;
 [Route("api/avatar/")]
 public class AvatarController : ControllerBase
 {
-    private readonly IAvatarService _avatarService;
-    private readonly UserManager<User> _userManager;
+    private readonly IAvatarService avatarService;
+    private readonly UserManager<User> userManager;
 
     public AvatarController(
         IAvatarService avatarService,
         UserManager<User> userManager)
     {
-        _avatarService = avatarService;
-        _userManager = userManager;
+        this.avatarService = avatarService;
+        this.userManager = userManager;
     }
     
     [HttpPost("upload")]
@@ -26,7 +26,7 @@ public class AvatarController : ControllerBase
     {
         try
         {
-            var currentUserId = _userManager.GetUserId(User);
+            var currentUserId = userManager.GetUserId(User);
             if (string.IsNullOrEmpty(currentUserId))
                 userId = "0";
 
@@ -37,7 +37,7 @@ public class AvatarController : ControllerBase
             if (!(fileExt == ".jpeg" || fileExt == ".jpg"))
                 throw new ArgumentException("Only .jpg files are allowed.");
 
-            var avatarPath = await _avatarService.UploadAvatarAsync(file, userId);
+            var avatarPath = await avatarService.UploadAvatarAsync(file, userId);
             
             return Ok(new { Path = avatarPath });
         }
@@ -59,17 +59,17 @@ public class AvatarController : ControllerBase
     [HttpDelete("delete")]
     public async Task<IActionResult> DeleteAvatar()
     {
-        var userId = _userManager.GetUserId(User);
+        var userId = userManager.GetUserId(User);
         if (string.IsNullOrEmpty(userId)) return Unauthorized();
 
-        var result = await _avatarService.DeleteAvatarAsync(userId);
+        var result = await avatarService.DeleteAvatarAsync(userId);
         return result ? Ok() : BadRequest("Avatar not found");
     }
 
     [HttpGet("{userId}")]
     public async Task<IActionResult> GetAvatar(string userId)
     {
-        var path = await _avatarService.GetAvatarPathAsync(userId);
+        var path = await avatarService.GetAvatarPathAsync(userId);
         if (path == null) return NotFound();
 
         return Ok(new { Path = path });

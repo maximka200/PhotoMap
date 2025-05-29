@@ -10,19 +10,19 @@ public class Photo
     public uint UId { get; private set; }
 
     public string Url { get; set; }
-    
+
     [ForeignKey("Point")]
     public uint PointId { get; set; }
     [JsonIgnore]
     public Point Point { get; set; }
-    
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-    public HashSet<int> LikedList = new HashSet<int>(); // with User.Id
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    
+    public List<User> LikedByUsers { get; set; } = new();
     
     public Photo(string url, uint pointId)
     {
-        Url = url;
+        Url     = url;
         PointId = pointId;
     }
 }

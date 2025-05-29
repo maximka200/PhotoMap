@@ -53,4 +53,10 @@ public class PhotoServices : IPhotoServices
         await repository.DeleteAsync(photo);
         logger.LogInformation("Photo with ID {Id} deleted from repository.", id);
     }
+
+    public Task LikePhoto(uint id, string user)
+    {
+        logger.Log(LogLevel.Information, "{Method} called with id: {Id}, user: {User}", nameof(LikePhoto), id, user);
+        return repository.LikePhotoFromUserAsync(id, user);
+    }
 }

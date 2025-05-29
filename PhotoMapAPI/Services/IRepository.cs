@@ -6,4 +6,5 @@ public interface IRepository<T>
     Task DeleteAsync(T entity);
     Task<T?> GetByIdAsync(uint id);
     Task UpdateAsync(T entity);
+    
 }

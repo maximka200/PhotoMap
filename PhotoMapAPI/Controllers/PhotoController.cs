@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace PhotoMapAPI.Controllers
@@ -8,9 +9,11 @@ namespace PhotoMapAPI.Controllers
     public class PhotoController : ControllerBase
     {
         private readonly IPhotoServices photoServices;
+        private readonly UserManager<User> userManager;
 
-        public PhotoController(IPhotoServices photoServices)
+        public PhotoController(IPhotoServices photoServices, UserManager<User> userManager)
         {
+            this.userManager = userManager;
             this.photoServices = photoServices;
         }
 
@@ -47,6 +50,31 @@ namespace PhotoMapAPI.Controllers
             }
         }
         
+        // DELETE: api/photos/like/{id}
+        [HttpPost("like/{id}")]
+        [Authorize]
+        public async Task<IActionResult> LikePhoto(uint photoId)
+        {
+            try
+            {
+                var user = User;
+                var userId = userManager.GetUserId(User);
+                if (userId == null)
+                {
+                    return Unauthorized("User not authenticated.");
+                }
+                await photoServices.LikePhoto(photoId, userId);
+                return Ok($"Photo with ID {photoId} liked successfully by {userId}.");
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound($"Photo with ID {photoId} not found.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Server error: {ex.Message}");
+            }
+        }
         //TODO: UPDATE: api/photos/{id}
     }
 }
