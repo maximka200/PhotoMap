@@ -6,7 +6,7 @@ using PhotoMapAPI.Models;
 
 namespace PhotoMapAPI.Services
 {
-    public class UserService
+    public class UserService : IUserService
     {
         private readonly UserManager<User> userManager;
 
@@ -28,6 +28,17 @@ namespace PhotoMapAPI.Services
             return await userManager.Users
                 .Include(u => u.UserAvatar)
                 .ToListAsync();
+        }
+        
+        public async Task<List<string>> GetLikedPhotoIdsAsync(string userId)
+        {
+            var photos = await userManager.Users
+                .Where(u => u.Id == userId)
+                .SelectMany(u => u.LikedPhotos)
+                .Select(p => p.UId.ToString())
+                .ToListAsync();
+
+            return photos;
         }
     }
 }

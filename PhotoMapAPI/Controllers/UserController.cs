@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Identity;
 using PhotoMapAPI.Services;
 
 namespace PhotoMapAPI.Controllers
@@ -8,11 +11,13 @@ namespace PhotoMapAPI.Controllers
     [Route("api/user/")]
     public class UserController : ControllerBase
     {
-        private readonly UserService userService;
+        private readonly IUserService userService;
+        private readonly UserManager<User> userManager;
 
-        public UserController(UserService userService)
+        public UserController(IUserService userService, UserManager<User> userManager)
         {
             this.userService = userService;
+            this.userManager = userManager;
         }
 
         [HttpGet("{id}")]
@@ -26,20 +31,20 @@ namespace PhotoMapAPI.Controllers
         }
 
         [HttpGet("all")]
+        [Authorize]
         public async Task<IActionResult> GetAllUsers()
         {
             var users = await userService.GetAllUsersAsync();
             return Ok(users);
         }
 
-        // [HttpGet("liked")]
-        // public async Task<IActionResult> GetLikedPhotoIds(uint photoId)
-        // {
-        //     var users = await userService.GetLikedPhotoIdsAsync(photoId);
-        //     if (users == null || users.Count == 0)
-        //         return NotFound($"No users found who liked photo with ID {photoId}.");
-        //
-        //     return Ok(users);
-        // }
+        [HttpGet("liked")]
+        [Authorize]
+        public async Task<IActionResult> GetLikedPhotoIds()
+        {
+            var userId = userManager.GetUserId(User);
+            var photos = await userService.GetLikedPhotoIdsAsync(userId);
+            return Ok(photos);
+        }
     }
 }
