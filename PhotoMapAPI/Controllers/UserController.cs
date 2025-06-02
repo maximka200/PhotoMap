@@ -19,7 +19,8 @@ namespace PhotoMapAPI.Controllers
             this.userService = userService;
             this.userManager = userManager;
         }
-
+        
+        // GET: api/user/{id}
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUserById(string id)
         {
@@ -29,7 +30,8 @@ namespace PhotoMapAPI.Controllers
 
             return Ok(user);
         }
-
+        
+        // GET: api/user/all
         [HttpGet("all")]
         [Authorize]
         public async Task<IActionResult> GetAllUsers()
@@ -37,7 +39,8 @@ namespace PhotoMapAPI.Controllers
             var users = await userService.GetAllUsersAsync();
             return Ok(users);
         }
-
+        
+        // GET: api/user/liked
         [HttpGet("liked")]
         [Authorize]
         public async Task<IActionResult> GetLikedPhotoIds()

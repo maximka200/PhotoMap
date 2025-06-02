@@ -59,4 +59,11 @@ public class PhotoServices : IPhotoServices
         logger.Log(LogLevel.Information, "{Method} called with id: {Id}, user: {User}", nameof(LikePhoto), id, user);
         return repository.LikePhotoFromUserAsync(id, user);
     }
+
+    public Task DislikePhoto(uint photoId, string userId)
+    {
+        logger.Log(LogLevel.Information, "{Method} called with id: {Id}, user: {User}", nameof(LikePhoto), 
+            photoId, userId);
+        return repository.DislikePhotoFromUserAsync(photoId, userId);
+    }
 }

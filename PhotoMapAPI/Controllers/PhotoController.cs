@@ -51,7 +51,7 @@ namespace PhotoMapAPI.Controllers
         }
         
         // DELETE: api/photos/like/{id}
-        [HttpPost("like/{id}")]
+        [HttpPost("like/{photoId}")]
         [Authorize]
         public async Task<IActionResult> LikePhoto(uint photoId)
         {
@@ -64,6 +64,32 @@ namespace PhotoMapAPI.Controllers
                     return Unauthorized("User not authenticated.");
                 }
                 await photoServices.LikePhoto(photoId, userId);
+                return Ok($"Photo with ID {photoId} liked successfully by {userId}.");
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound($"Photo with ID {photoId} not found.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Server error: {ex.Message}");
+            }
+        }
+        
+        // DELETE: api/photos/dislike/{id}
+        [HttpDelete("dislike/{photoId}")]
+        [Authorize]
+        public async Task<IActionResult> DislikePhoto(uint photoId)
+        {
+            try
+            {
+                var user = User;
+                var userId = userManager.GetUserId(User);
+                if (userId == null)
+                {
+                    return Unauthorized("User not authenticated.");
+                }
+                await photoServices.DislikePhoto(photoId, userId);
                 return Ok($"Photo with ID {photoId} liked successfully by {userId}.");
             }
             catch (KeyNotFoundException)
