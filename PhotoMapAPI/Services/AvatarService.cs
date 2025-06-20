@@ -114,7 +114,7 @@ namespace PhotoMapAPI.Services
             logger.LogInformation($"{nameof(GetAvatarPathAsync)} called with userId: {userId}");
 
             var user = await userManager.FindByIdAsync(userId);
-            return user?.UserAvatar.AvatarPath;
+            return user?.UserAvatarId + ".jpg";
         }
     }
 }

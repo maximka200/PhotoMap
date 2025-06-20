@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using PhotoMapAPI.Controllers;
 using PhotoMapAPI.DTOs;
 
@@ -18,16 +19,18 @@ public class AuthController : ControllerBase
     private readonly UserManager<User> _userManager;
     private readonly IConfiguration _config;
     private readonly IAuthService _authService;
-    private readonly ILogger<AuthController> logger;
+    private readonly ILogger<AuthController> _logger;
 
     public AuthController(
         UserManager<User> userManager,
         IConfiguration config,
-        IAuthService authService)
+        IAuthService authService, 
+        ILogger<AuthController> logger)
     {
         _userManager = userManager;
         _config = config;
         _authService = authService;
+        _logger = logger;
     }
 
     [HttpPost("login")]
@@ -39,7 +42,7 @@ public class AuthController : ControllerBase
         {
             if (user == null || !await _userManager.CheckPasswordAsync(user, dto.Password))
             {
-                logger.Log(LogLevel.Information, "Invalid login attempt for user {UserName}", dto.UserName);
+                _logger.Log(LogLevel.Information, "Invalid login attempt for user {UserName}", dto.UserName);
                 return Unauthorized("invalid username or password");
             }
 
@@ -52,13 +55,14 @@ public class AuthController : ControllerBase
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Error during login for user {UserName}", dto.UserName);
+            _logger.LogError(ex, "Error during login for user {UserName}", dto.UserName);
             return StatusCode(500, "Internal server error");
         }
     }
 
     [HttpPost("register")]
     [AllowAnonymous]
+    [EnableCors("AllowFrontend")]
     public async Task<IActionResult> Register([FromBody] RegisterDto dto)
     {
         var user = new User

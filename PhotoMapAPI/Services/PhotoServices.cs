@@ -17,9 +17,13 @@ public class PhotoServices : IPhotoServices
     }
     public async Task<Photo?> GetPhotoById(uint id)
     {
-        logger.Log(LogLevel.Information,$"{nameof(GetPhotoById)} called with id: {id}");
-        return await repository.GetByIdAsync(id);
+        logger.Log(LogLevel.Information, $"{nameof(GetPhotoById)} called with id: {id}");
+        var photo = await repository.GetByIdAsync(id);
+        var userIds = await repository.GetIdUserThatLike(id);
+        photo.LikedIds = userIds;
+        return photo;
     }
+    
     public async Task DeletePhoto(uint id)
     {
         logger.LogInformation("{Method} called with id: {Id}", nameof(DeletePhoto), id);

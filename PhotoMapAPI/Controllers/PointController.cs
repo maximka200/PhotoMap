@@ -56,7 +56,7 @@ namespace PhotoMapAPI.Controllers
             }
         }
         
-        // POST: api/photos/{id}
+        // POST: api/photos
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> AddPoint([FromBody] PointCreateDto pointDto)

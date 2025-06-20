@@ -21,6 +21,19 @@ public class PhotoRepository : Repository<Photo>, IPhotoRepository
 
         return photos;
     }
+    
+    public async Task<List<string>> GetIdUserThatLike(uint id) 
+    {
+        var photo = await dbSet
+            .Include(p => p.LikedByUsers)
+            .FirstOrDefaultAsync(p => p.UId == id);
+
+        if (photo == null)
+            throw new Exception("Photo not found");
+
+        return photo.LikedByUsers.Select(u => u.Id).ToList();
+        
+    }
 
     public async Task LikePhotoFromUserAsync(uint photoId, string userId)
     {

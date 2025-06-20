@@ -17,8 +17,11 @@ public class Photo
     public Point Point { get; set; }
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    
+    [JsonIgnore]
     public List<User> LikedByUsers { get; set; } = new();
+    
+    [NotMapped]
+    public List<string> LikedIds { get; set; }
     
     public Photo(string url, uint pointId)
     {
