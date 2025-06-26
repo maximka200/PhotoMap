@@ -1,0 +1,20 @@
+{
+  "Version": 1,
+  "Hash": "hveVTJ8tb7uy1sMmIeEi0DPxBksTUpdScCQpTRLqHYc=",
+  "Source": "PhotoMapAPI",
+  "BasePath": "_content/PhotoMapAPI",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "PhotoMapAPI/wwwroot",
+      "Source": "PhotoMapAPI",
+      "ContentRoot": "/Users/maximgolovnev/Desktop/Photo-Map/PhotoMapAPI/PhotoMapAPI/wwwroot/",
+      "BasePath": "_content/PhotoMapAPI",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [],
+  "Endpoints": []
+}

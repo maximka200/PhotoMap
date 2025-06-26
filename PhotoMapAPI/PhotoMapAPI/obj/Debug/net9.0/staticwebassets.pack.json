@@ -1,0 +1,89 @@
+{
+  "Files": [
+    {
+      "Id": "/Users/maximgolovnev/RiderProjects/Photo-Map/PhotoMapAPI/wwwroot/avatars/1a31ac79-e214-4546-83fc-f480d83917e4.jpeg",
+      "PackagePath": "staticwebassets/avatars/1a31ac79-e214-4546-83fc-f480d83917e4.jpeg"
+    },
+    {
+      "Id": "/Users/maximgolovnev/RiderProjects/Photo-Map/PhotoMapAPI/wwwroot/avatars/581d376e-ac09-4b4f-9759-8773cc50f6eb.jpg",
+      "PackagePath": "staticwebassets/avatars/581d376e-ac09-4b4f-9759-8773cc50f6eb.jpg"
+    },
+    {
+      "Id": "/Users/maximgolovnev/RiderProjects/Photo-Map/PhotoMapAPI/wwwroot/avatars/b9616a51-53f3-415c-8d54-5b6432b36afd.jpg",
+      "PackagePath": "staticwebassets/avatars/b9616a51-53f3-415c-8d54-5b6432b36afd.jpg"
+    },
+    {
+      "Id": "/Users/maximgolovnev/RiderProjects/Photo-Map/PhotoMapAPI/wwwroot/uploads/20.jpg",
+      "PackagePath": "staticwebassets/uploads/20.jpg"
+    },
+    {
+      "Id": "/Users/maximgolovnev/RiderProjects/Photo-Map/PhotoMapAPI/wwwroot/uploads/21.jpg",
+      "PackagePath": "staticwebassets/uploads/21.jpg"
+    },
+    {
+      "Id": "/Users/maximgolovnev/RiderProjects/Photo-Map/PhotoMapAPI/wwwroot/uploads/22.jpg",
+      "PackagePath": "staticwebassets/uploads/22.jpg"
+    },
+    {
+      "Id": "/Users/maximgolovnev/RiderProjects/Photo-Map/PhotoMapAPI/wwwroot/uploads/23.jpg",
+      "PackagePath": "staticwebassets/uploads/23.jpg"
+    },
+    {
+      "Id": "/Users/maximgolovnev/RiderProjects/Photo-Map/PhotoMapAPI/wwwroot/uploads/24.jpg",
+      "PackagePath": "staticwebassets/uploads/24.jpg"
+    },
+    {
+      "Id": "/Users/maximgolovnev/RiderProjects/Photo-Map/PhotoMapAPI/wwwroot/uploads/25.jpg",
+      "PackagePath": "staticwebassets/uploads/25.jpg"
+    },
+    {
+      "Id": "/Users/maximgolovnev/RiderProjects/Photo-Map/PhotoMapAPI/wwwroot/uploads/26.jpg",
+      "PackagePath": "staticwebassets/uploads/26.jpg"
+    },
+    {
+      "Id": "/Users/maximgolovnev/RiderProjects/Photo-Map/PhotoMapAPI/wwwroot/uploads/27.jpg",
+      "PackagePath": "staticwebassets/uploads/27.jpg"
+    },
+    {
+      "Id": "/Users/maximgolovnev/RiderProjects/Photo-Map/PhotoMapAPI/wwwroot/uploads/28.jpg",
+      "PackagePath": "staticwebassets/uploads/28.jpg"
+    },
+    {
+      "Id": "/Users/maximgolovnev/RiderProjects/Photo-Map/PhotoMapAPI/wwwroot/uploads/29.jpg",
+      "PackagePath": "staticwebassets/uploads/29.jpg"
+    },
+    {
+      "Id": "/Users/maximgolovnev/RiderProjects/Photo-Map/PhotoMapAPI/wwwroot/uploads/30.jpg",
+      "PackagePath": "staticwebassets/uploads/30.jpg"
+    },
+    {
+      "Id": "/Users/maximgolovnev/RiderProjects/Photo-Map/PhotoMapAPI/wwwroot/uploads/31.jpg",
+      "PackagePath": "staticwebassets/uploads/31.jpg"
+    },
+    {
+      "Id": "/Users/maximgolovnev/RiderProjects/Photo-Map/PhotoMapAPI/wwwroot/uploads/32.jpg",
+      "PackagePath": "staticwebassets/uploads/32.jpg"
+    },
+    {
+      "Id": "obj/Debug/net9.0/staticwebassets/msbuild.PhotoMapAPI.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
+    },
+    {
+      "Id": "obj/Debug/net9.0/staticwebassets/msbuild.PhotoMapAPI.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj/Debug/net9.0/staticwebassets/msbuild.build.PhotoMapAPI.props",
+      "PackagePath": "build\\PhotoMapAPI.props"
+    },
+    {
+      "Id": "obj/Debug/net9.0/staticwebassets/msbuild.buildMultiTargeting.PhotoMapAPI.props",
+      "PackagePath": "buildMultiTargeting\\PhotoMapAPI.props"
+    },
+    {
+      "Id": "obj/Debug/net9.0/staticwebassets/msbuild.buildTransitive.PhotoMapAPI.props",
+      "PackagePath": "buildTransitive\\PhotoMapAPI.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
