@@ -1,0 +1,715 @@
+.add-marker-modal {
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  position: relative;
+  width: 600px;
+  margin: 0 auto;
+  margin-top: 100px;
+}
+
+.modal-header {
+  margin-bottom: 15px;
+}
+
+h3,
+p {
+  font-family: Unbounded;
+  font-size: 38px;
+  line-height: 20px;
+  letter-spacing: 3%;
+  color: black;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Кнопка добавления */
+.mode-toggle {
+  position: absolute;
+  bottom: 24px;
+  left: 24px;
+  z-index: 1000;
+  padding: 12px 20px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #333;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: "Unbounded", sans-serif;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.mode-toggle:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+  background: white;
+}
+
+.mode-toggle.active {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+  color: white;
+  box-shadow: 0 4px 20px rgba(255, 107, 107, 0.3);
+}
+
+.clear-route-button {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  z-index: 1000;
+  padding: 10px 16px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #333;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: "Unbounded", sans-serif;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.clear-route-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  background: white;
+}
+
+/* Стили модального окна */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Новый дизайн модального окна точки */
+.location-modal {
+  background: white;
+  border-radius: 16px;
+  max-width: 800px;
+  width: 90%;
+  max-height: 85vh;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.location-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-height: 85vh;
+}
+
+.close-modal-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: rgba(0, 0, 0, 0.1);
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 18px;
+  z-index: 10;
+  transition: background 0.2s;
+}
+
+.close-modal-btn:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.location-header {
+  padding: 24px 24px 16px;
+  border-bottom: 1px solid #eee;
+  flex-shrink: 0;
+}
+
+.location-header h2 {
+  font-family: Unbounded;
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  color: #333;
+  line-height: 1.3;
+}
+
+.photo-count {
+  font-family: Unbounded;
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+  font-weight: 400;
+}
+
+.location-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 24px 24px;
+  scrollbar-width: thin;
+  scrollbar-color: #ccc #f5f5f5;
+}
+
+/* Стилизация скроллбара для Webkit браузеров */
+.location-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.location-content::-webkit-scrollbar-track {
+  background: #f5f5f5;
+  border-radius: 4px;
+}
+
+.location-content::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.location-content::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}
+
+/* Галерея фотографий */
+.photos-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.photo-item {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f5f5f5;
+  aspect-ratio: 1;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.photo-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.photo-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photo-likes {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+}
+
+.like-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.no-photos {
+  text-align: center;
+  padding: 48px 24px;
+  color: #666;
+  margin-bottom: 32px;
+}
+
+.no-photos p {
+  font-family: Unbounded;
+  font-size: 16px;
+  margin: 0;
+}
+
+/* Секция добавления фотографий */
+.add-photos-section {
+  border-top: 1px solid #eee;
+  padding-top: 24px;
+  margin-top: 24px;
+}
+
+.add-photos-section h3 {
+  font-family: Unbounded;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 16px 0;
+  color: #333;
+}
+
+.file-upload-area {
+  margin-bottom: 16px;
+}
+
+.file-upload-label {
+  display: block;
+  border: 2px dashed #ddd;
+  border-radius: 12px;
+  padding: 32px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: #fafafa;
+}
+
+.file-upload-label:hover {
+  border-color: #4caf50;
+  background: #f0f8f0;
+}
+
+.file-input {
+  display: none;
+}
+
+.upload-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.upload-text span {
+  font-family: Unbounded;
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+}
+
+.upload-text small {
+  font-family: Unbounded;
+  font-size: 12px;
+  color: #666;
+}
+
+/* Превью фотографий */
+.photo-previews {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.preview-item {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #f5f5f5;
+}
+
+.preview-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.remove-preview-btn {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: #ff4444;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.remove-preview-btn:hover {
+  background: #cc0000;
+}
+
+/* Кнопки действий */
+.action-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+.add-photos-btn,
+.route-btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-family: Unbounded;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.add-photos-btn {
+  background: #4caf50;
+  color: white;
+  flex: 1;
+}
+
+.add-photos-btn:hover:not(:disabled) {
+  background: #45a049;
+  transform: translateY(-1px);
+}
+
+.add-photos-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.route-btn {
+  background: #2196f3;
+  color: white;
+}
+
+.route-btn:hover {
+  background: #1976d2;
+  transform: translateY(-1px);
+}
+
+/* Полноэкранное изображение */
+.fullscreen-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fullscreen-content {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.fullscreen-content img {
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.fullscreen-actions {
+  margin-top: 16px;
+}
+
+.fullscreen-like-btn {
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 24px;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-family: Unbounded;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.fullscreen-like-btn:hover {
+  background: white;
+  transform: scale(1.05);
+}
+
+.heart-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.close-fullscreen-btn {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 24px;
+  transition: all 0.2s;
+}
+
+.close-fullscreen-btn:hover {
+  background: white;
+  color: #ff4444;
+}
+
+/* Модальное окно маршрута */
+.route-modal {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 400px;
+  width: 90%;
+}
+
+.route-form h3 {
+  font-family: Unbounded;
+  font-size: 20px;
+  margin: 0 0 16px 0;
+  text-align: center;
+}
+
+.route-input {
+  margin-bottom: 16px;
+}
+
+.route-input label {
+  display: block;
+  font-family: Unbounded;
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.route-input input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.route-error {
+  color: #ff4444;
+  font-size: 12px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.route-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.route-buttons button {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-family: Unbounded;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.confirm-btn {
+  background: #4caf50;
+  color: white;
+}
+
+.confirm-btn:hover {
+  background: #45a049;
+}
+
+.route-buttons button:last-child {
+  background: #f5f5f5;
+  color: #333;
+}
+
+.route-buttons button:last-child:hover {
+  background: #eee;
+}
+
+/* Модальное окно новой метки */
+.new-marker-modal {
+  background: rgba(231, 255, 211, 1);
+  border-radius: 20px;
+  padding: 24px;
+  max-width: 500px;
+  width: 90%;
+}
+
+.new-marker-form h2 {
+  font-family: Unbounded;
+  font-size: 20px;
+  text-align: center;
+  margin: 0 0 24px 0;
+  line-height: 1.3;
+}
+
+.marker-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.marker-buttons button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-family: Unbounded;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.marker-buttons button:first-child {
+  background: #4caf50;
+  color: white;
+}
+
+.marker-buttons button:first-child:hover {
+  background: #45a049;
+}
+
+.marker-buttons button:last-child {
+  background: #f5f5f5;
+  color: #333;
+}
+
+.marker-buttons button:last-child:hover {
+  background: #eee;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+  .modal-overlay {
+    padding: 10px;
+  }
+
+  .location-modal {
+    max-height: 90vh;
+    width: 95%;
+  }
+
+  .location-header {
+    padding: 16px 16px 12px;
+  }
+
+  .location-header h2 {
+    font-size: 20px;
+  }
+
+  .location-content {
+    padding: 0 16px 16px;
+  }
+
+  .photos-gallery {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
+  }
+
+  .add-photos-section {
+    padding-top: 16px;
+    margin-top: 16px;
+  }
+
+  .file-upload-label {
+    padding: 24px 16px;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  .add-photos-btn,
+  .route-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .location-header h2 {
+    font-size: 18px;
+  }
+
+  .photos-gallery {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .photo-previews {
+    gap: 8px;
+  }
+
+  .preview-item {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+/* Остальные стили для совместимости */
+.controls {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mode {
+  position: absolute;
+  top: 530px;
+  left: 20px;
+  z-index: 1000;
+  padding: 12px 24px;
+  border: 2px solid rgba(33, 87, 36, 1);
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.mode:hover {
+  color: white;
+  transform: translateY(-1px);
+}
+
+.mode.active {
+  color: white;
+}
+
+.leaflet-control-attribution {
+  display: none !important;
+}

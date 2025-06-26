@@ -1,0 +1,251 @@
+/* Стили для страниц авторизации */
+.auth-page {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #8bea66 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    font-family: "Unbounded", sans-serif;
+}
+
+.auth-container {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    animation: slideUp 0.6s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.auth-logo {
+    width: 48px;
+    height: 48px;
+}
+
+.auth-header h1 {
+    font-family: "Unbounded", sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: #333;
+    margin: 0;
+    letter-spacing: -0.5px;
+}
+
+.auth-subtitle {
+    font-size: 16px;
+    color: #666;
+    margin: 0;
+    font-weight: 400;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-field label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+}
+
+.form-field input {
+    padding: 14px 16px;
+    border: 2px solid #e1e5e9;
+    border-radius: 12px;
+    font-size: 16px;
+    font-family: "Unbounded", sans-serif;
+    font-weight: 400;
+    transition: all 0.3s ease;
+    background: #fafbfc;
+}
+
+.form-field input:focus {
+    outline: none;
+    border-color: #667eea;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-field input.error {
+    border-color: #ff4757;
+    background: #fff5f5;
+}
+
+.form-field input::placeholder {
+    color: #a0a6b1;
+    font-weight: 400;
+}
+
+.field-error {
+    font-size: 12px;
+    color: #ff4757;
+    font-weight: 500;
+    margin-top: 4px;
+}
+
+.error-message {
+    background: #fff5f5;
+    color: #ff4757;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    border: 1px solid #ffebee;
+    text-align: center;
+}
+
+.success-message {
+    background: #f0f8f0;
+    color: #4caf50;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    border: 1px solid #e8f5e8;
+    text-align: center;
+}
+
+.auth-button {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 16px;
+    padding: 20px 36px;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: "Unbounded", sans-serif;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 8px;
+
+    display: flex;           /* Включаем flex */
+    justify-content: center; /* Горизонтальный центр */
+    align-items: center;     /* Вертикальный центр */
+}
+
+
+.auth-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+.auth-button:active {
+    transform: translateY(0);
+}
+
+.auth-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.auth-footer {
+    text-align: center;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid #e1e5e9;
+}
+
+.auth-footer p {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+}
+
+.auth-footer a {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.auth-footer a:hover {
+    color: #764ba2;
+    text-decoration: underline;
+}
+
+/* Адаптивность */
+@media (max-width: 480px) {
+    .auth-page {
+        padding: 16px;
+    }
+
+    .auth-container {
+        padding: 24px;
+    }
+
+    .auth-header h1 {
+        font-size: 24px;
+    }
+
+    .logo-section {
+        flex-direction: column;
+        gap: 8px;
+    }
+}
+
+/* Анимация для полей ввода */
+.form-field input {
+    position: relative;
+}
+
+.form-field input:focus + .floating-label,
+.form-field input:not(:placeholder-shown) + .floating-label {
+    transform: translateY(-24px) scale(0.8);
+    color: #7eea66;
+}
+
+/* Дополнительные эффекты */
+.auth-container::before {
+    content: "";
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(135deg, #6aea66, #764ba2);
+    border-radius: 22px;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.auth-container:hover::before {
+    opacity: 0.1;
+}

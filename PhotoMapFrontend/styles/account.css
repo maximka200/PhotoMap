@@ -1,0 +1,133 @@
+/* Базовые стили */
+.home-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: "Unbounded", sans-serif;
+}
+
+.profile-join-date {
+    font-size: 1px;
+    line-height: 1.8;
+}
+
+.home-header {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 12px 24px;
+    position: relative;
+    z-index: 100;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.header-logo {
+    width: 28px;
+    height: 28px;
+    filter: brightness(0) invert(1);
+}
+
+.app-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: white;
+}
+
+.header-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.profile-link,
+.logout-btn {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    padding: 8px 16px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.profile-link:hover,
+.logout-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
+}
+
+.home-main {
+    flex: 1;
+    position: relative;
+}
+
+/* Адаптив для планшетов */
+@media (max-width: 1024px) {
+    .header-content {
+        padding: 0 16px;
+    }
+}
+
+/* Адаптив для мобильных */
+@media (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .app-title {
+        font-size: 16px;
+    }
+
+    .profile-link,
+    .logout-btn {
+        font-size: 12px;
+        padding: 6px 12px;
+        height: 28px;
+    }
+
+    .header-actions {
+        align-self: stretch;
+        justify-content: space-between;
+        width: 100%;
+    }
+}
+
+/* Адаптив для очень маленьких экранов */
+@media (max-width: 480px) {
+    .app-title {
+        font-size: 14px;
+    }
+
+    .profile-link,
+    .logout-btn {
+        font-size: 11px;
+        padding: 4px 8px;
+        height: 24px;
+    }
+
+    .header-logo {
+        width: 24px;
+        height: 24px;
+    }
+}

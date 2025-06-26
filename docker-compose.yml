@@ -1,0 +1,42 @@
+﻿version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    container_name: photomap_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: photomap
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: always
+
+  api:
+    build:
+      context: ./PhotoMapAPI
+    container_name: photomap_api
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__DefaultConnection: Host=db;Port=5432;Database=photomap;Username=postgres;Password=postgres
+    ports:
+      - "5001:80"
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: ./PhotoMapFrontend
+    container_name: photomap_frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - api
+    environment:
+      VITE_API_URL: http://localhost:5001
+      # Или: VITE_API_URL: http://api:80 — если всё внутри контейнеров
+
+volumes:
+  pgdata:
